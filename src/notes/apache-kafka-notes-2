@@ -1,0 +1,60 @@
+#Topics: a particular stream of data
+
+    . Similar to a table in a database(without all the constraints)
+    . You can have as many topics as you want
+    . A topic is identified by its name
+
+#Topics are split in partitions
+
+    . Each partition is ordered
+    . Each message within a partition gets an incremental id, called offset
+
+    # Offset
+    . Offset only have a meaning for a specific partitions.
+    . Order is guaranteed only within a partition
+    . Once the data is written to a partition, it can't be changed
+    . Data is assigned randomly to a partition usless a key provided
+
+
+#Brokers:
+=========
+
+    Note: Cluster means multiple machine, broker means server.
+    Note: What hold the topics and partitions: It is broker.
+
+    . A kafka cluster is composed of multiple brokers(server)
+    . Each broker is identified with its ID(integer)
+    . Each broker contains certain topic partitions
+    . After connecting to any broker(called a bootstrap broker),
+        you will be connected to the entire cluster
+    . A good number to get started is 3 brokers, but some big cluster
+        have over 100 brokers
+    . In these examples we choose to number brokers starting at 100(arbitrary).
+
+#Topic Replication Factor:
+==========================
+
+    . Topics should have a replication factor > 1 (usually between 2 and 3)
+    . This way if a broker is down, another broker can serve the data
+
+#Concept of Leader for a Partition:
+===================================
+
+    . At any time only one broker can be a leader for a given partition
+    . Only that leader can receive and serve data for a partition
+    . The other brokers will synchronize the data
+    . Therefor each partition has one leader and multiple ISR(in-sync replica)
+    . The leader and ISR will be determined by zoo-keeper.
+
+#Producers:
+===========
+
+    . Producers write data to topics(which is made of partitions)
+    . Producers automatically know to which broker and partition to write to
+    . In case of Broker failures, Produces will automatically recover.
+
+    #Acknowledgment:
+    ================
+    . acks=0: possible data loss
+    . acks=1: limited data loss
+    . acks=all: no data loss
