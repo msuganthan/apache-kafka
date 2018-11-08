@@ -58,3 +58,15 @@
     . acks=0: possible data loss
     . acks=1: limited data loss
     . acks=all: no data loss
+
+#Producers: Message keys:
+=========================
+
+    . Producers can choose to send a key with the message(string, number, etc..)
+    . If key=null, data is sent round robin(broker 101 then 102, then 103...)
+    . If a key is sent, then all messages for that key will always go to the same partition
+    . A key is basically sent if you need message ordering for a specific field
+
+        Advanced: we get this guarantee thanks to key hashing, which depends on the number of partitions
+
+        
