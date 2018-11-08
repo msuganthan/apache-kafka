@@ -1,0 +1,50 @@
+#Consumers:
+===========
+
+    . Consumer read data from a topic(identified by name)
+    . Consumers know which broker to read from
+    . In case of broker failures, consumers know how to recover
+    . Data is read in order within each partitions
+
+#Consumer groups:
+=================
+
+    . Cosumers read data in consumer groups
+    . Each consumer within a group reads from exclusive paritions
+    . If you have more consumers than partitions, some consumers will be inactive.
+
+    What if too many consumers?
+    ===========================
+
+    . If you have more consumers than partitions, some consumers will be inactive
+
+#Consumer offsets:
+==================
+
+    . Kafka stores the offsets at which a consumer group has been reading
+    . The offsets committed live in a kafka topic named __consumer_offsets
+    . When a consumer in a group has processed data from kafka, it should be committing
+        the offsets
+    . If a consumer dies, it will able to read back from it left off
+        thanks to the committed consumer offsets!
+
+#Delivery semantics for consumers:
+==================================
+
+    . Consumers choose when to commit offsets
+    . There are 3 delivery semantics
+
+    . At most once:
+        . offsets are committed as soon as the message is received
+        . If the processing goes wrong, the message will be lost
+
+    . At least once(usually preferred):
+
+        . offsets are committed after the message is processed.
+        . If the processing goes wrong, the message will be read again.
+        . This can result in duplicate processing of messages. Make sure your
+            processing is idempotent( processing again the message won't impact your systems)
+
+    . Exactly once:
+        . Can be achieved for kafka => kafka workflows using Kafka Stream API
+        . For Kafka => External System workflows, use an idempotent consumer.
