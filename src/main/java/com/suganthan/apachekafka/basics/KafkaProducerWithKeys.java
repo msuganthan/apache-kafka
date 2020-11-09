@@ -1,4 +1,4 @@
-package com.suganthan.apachekafka;
+package com.suganthan.apachekafka.basics;
 
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -9,11 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.Properties;
 
 @SpringBootApplication
-public class KafkaProducerWithCallback {
+public class KafkaProducerWithKeys {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 
-        Logger logger = LoggerFactory.getLogger(KafkaProducerWithCallback.class);
+        Logger logger = LoggerFactory.getLogger(KafkaProducerWithKeys.class);
 
         String bootStrapServers = "127.0.0.1:9092";
         Properties properties = new Properties();
@@ -24,11 +24,16 @@ public class KafkaProducerWithCallback {
 
         //create a producer
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-        for (int i = 0; i < 100; i++) {
-            ProducerRecord<String, String> record = new ProducerRecord<String, String>("first_topic", "hello world"+i);
-            producer.send(record, new Callback() {
-                @Override
-                public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+        for (int i = 0; i < 10; i++) {
+
+            String topic = "first_topic";
+            String value = "hello world"+Integer.toString(i);
+            String id = "id_"+Integer.toString(i);
+
+            logger.info("Key "+id);
+            ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, id, value);
+
+            producer.send(record, (recordMetadata, e)  ->  {
                     if (e !=null) {
                         logger.error("Error while producing ", e);
                     } else {
@@ -38,8 +43,7 @@ public class KafkaProducerWithCallback {
                                 "Offset: "+recordMetadata.offset()+ "\n"+
                                 "Timestamp: "+ recordMetadata.timestamp());
                     }
-                }
-            });
+            }).get();
         }
 
         producer.flush();

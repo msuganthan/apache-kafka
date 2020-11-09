@@ -1,4 +1,4 @@
-package com.suganthan.apachekafka;
+package com.suganthan.apachekafka.basics;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Properties;
 
-@SpringBootApplication
-public class ApacheKafkaApplication {
+//@SpringBootApplication
+public class ProducerDemo {
 
 	public static void main(String[] args) {
         String bootStrapServers = "127.0.0.1:9092";

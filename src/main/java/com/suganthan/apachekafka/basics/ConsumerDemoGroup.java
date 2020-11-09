@@ -1,7 +1,8 @@
-package com.suganthan.apachekafka;
+package com.suganthan.apachekafka.basics;
 
 /**
- * Created by msuganthan on 10/11/18.
+ * Created by msuganthan
+ * 10/11/18.
  */
 public class ConsumerDemoGroup {
     public static void main(String[] args) {

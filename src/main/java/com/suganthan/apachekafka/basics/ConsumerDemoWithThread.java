@@ -1,4 +1,4 @@
-package com.suganthan.apachekafka;
+package com.suganthan.apachekafka.basics;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
@@ -90,7 +89,7 @@ public class ConsumerDemoWithThread {
             properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
             // create consumer
-            kafkaConsumer = new KafkaConsumer<String, String>(properties);
+            kafkaConsumer = new KafkaConsumer<>(properties);
             // subscribe consumer to our topic(s)
             kafkaConsumer.subscribe(Arrays.asList(topic));
         }

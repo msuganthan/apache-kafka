@@ -1,4 +1,4 @@
-package com.suganthan.apachekafka;
+package com.suganthan.apachekafka.basics;
 
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -6,15 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.awt.image.Kernel;
 import java.util.Properties;
 
 @SpringBootApplication
-public class KafkaProducerWithKeys {
+public class KafkaProducerWithCallback {
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) {
 
-        Logger logger = LoggerFactory.getLogger(KafkaProducerWithKeys.class);
+        Logger logger = LoggerFactory.getLogger(KafkaProducerWithCallback.class);
 
         String bootStrapServers = "127.0.0.1:9092";
         Properties properties = new Properties();
@@ -25,19 +24,10 @@ public class KafkaProducerWithKeys {
 
         //create a producer
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-        for (int i = 0; i < 10; i++) {
-
-            String topic = "first_topic";
-            String value = "hello world"+Integer.toString(i);
-            String id = "id_"+Integer.toString(i);
-
-            logger.info("Key "+id);
-            ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, id, value);
-
-            producer.send(record, new Callback() {
-                @Override
-                public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-                    if (e !=null) {
+        for (int i = 0; i < 100; i++) {
+            ProducerRecord<String, String> record = new ProducerRecord<String, String>("first_topic", "hello world"+i);
+            producer.send(record, (recordMetadata, e) -> {
+                    if (e != null) {
                         logger.error("Error while producing ", e);
                     } else {
                         logger.info("Received new metadata. \n"+
@@ -46,8 +36,7 @@ public class KafkaProducerWithKeys {
                                 "Offset: "+recordMetadata.offset()+ "\n"+
                                 "Timestamp: "+ recordMetadata.timestamp());
                     }
-                }
-            }).get();
+                });
         }
 
         producer.flush();
