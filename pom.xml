@@ -6,7 +6,10 @@
 	<groupId>com.suganthan</groupId>
 	<artifactId>apache-kafka</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <modules>
+        <module>kafkastreamsfiltertweets</module>
+    </modules>
+    <packaging>pom</packaging>
 
 	<name>apache-kafka</name>
 	<description>Demo project for Spring Boot</description>

@@ -33,7 +33,7 @@ public class TwitterProducer {
     final String token          = "1667579858-dWIZwCe2WJBULQo0yMoXGy4Oh9Zml0p4YrmXRFb";
     final String secret         = "LB1TT5XYxgb2DDkKZhGACV0fYxABXZxa8cm6AuQylfDr2";
 
-    List<String> searchTerms = Arrays.asList("bitcoin");
+    List<String> searchTerms = Arrays.asList("bitcoin", "usa", "politics", "sport", "soccer");
 
     public TwitterProducer() {}
 
